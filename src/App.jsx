@@ -1,9 +1,18 @@
 import './App.css'
+import Allplaces from './components/Allplaces'
+import Home from './components/Home'
+import Navbar from './components/Navbar'
+
+import { Outlet } from 'react-router-dom'
 
 function App() {
+
   return (
     <>
-      <h1>Lets start</h1>
+      <Navbar/>
+      {/* <Home/> */}
+      {/* <Allplaces/> */}
+      <Outlet/>
     </>
   )
 }

@@ -1,0 +1,15 @@
+/* **********************HOME PG*************************** */
+
+.home-container{
+  background-color: aqua;
+  justify-content: center;
+  align-items: center;
+  height: 92vh;
+}
+
+.homecard{
+  background-color: burlywood;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+}
