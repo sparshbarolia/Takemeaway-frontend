@@ -1,48 +1,88 @@
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import axios from 'axios'
 
 const Home = () => {
-    const handleHomeClick = (title) => {
-        // console.log("Clicked");
-        axios.get(`https://maps.googleapis.com/maps/api/place/textsearch/json?query=${title}%20in%20Sydney&key=AIzaSyBErYfFhBxv_8kR3qgDv5qtgWNoNNLsn3o`)
-        .then((res) => console.log(res.json))
-        .catch((error) => {
-            console.error('Error fetching data:');
-        });
-    }
+    const [loc , setLoc] = useState("delhi");
 
     const homeArr = [
-        {cardTitle: "Bakery"},
-        {cardTitle: "Bar"},
-        {cardTitle: "Cafe"},
-        {cardTitle: "Fats food restaurant"},
-        {cardTitle: "Ice Cream Shop"},
-        {cardTitle: "Chinese Restaurant"},
-        {cardTitle: "Pizza Place"},
-        {cardTitle: "Sushi Restaurant"},
-        {cardTitle: "Thai Restaurant"},
-        {cardTitle: "Vegetarian Restaurant"},
+        { cardTitle: "Bakery" , photo: "Home_photos/bakery_photo.PNG"},
+        { cardTitle: "Bar" , photo: "Home_photos/bar_photo.PNG"},
+        { cardTitle: "Cafe" , photo: "Home_photos/cafe_photo.PNG"},
+        { cardTitle: "Fast food restaurant" , photo: "Home_photos/fast_food_photo.PNG"},
+        { cardTitle: "Ice Cream Shop" , photo: "Home_photos/ice_cream_photo.PNG"},
+        { cardTitle: "Chinese Restaurant" , photo: "Home_photos/chinese_photo.PNG"},
+        { cardTitle: "Pizza Place" , photo: "Home_photos/pizza_photo.PNG"},
+        { cardTitle: "Sushi Restaurant" , photo: "Home_photos/sushi_photo.PNG"},
+        { cardTitle: "Thai Restaurant" , photo: "Home_photos/thai_photo.PNG"},
+        { cardTitle: "Veg Restaurant" , photo: "Home_photos/veg_photo.PNG"},
     ]
 
-  return (
-    <div className='home-container d-flex flex-wrap justify-content-center align-items-center'>
-        {homeArr.map((items) => (
-            <Link 
-                className="card homecard m-2" 
-                style={{ width: "15rem" , height: "10rem"}} 
-                onClick={() => handleHomeClick(items.cardTitle)}
-                key={items.cardTitle}>
-            {/* <img src="..." className="card-img-top" alt="..."/> */}
-                <div className="card-body d-flex justify-content-center align-items-center">
-                    <h5 className="card-title">{items.cardTitle}</h5>
-                    {/* <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> */}
-                    {/* <a href="#" className="btn btn-primary">Go somewhere</a> */}
+    useEffect(() => {
+        // Check if geolocation is supported by the browser
+        if ("geolocation" in navigator) {
+            // Get current position
+            navigator.geolocation.getCurrentPosition(
+                async (position) => {
+                    const { latitude, longitude } = position.coords;
+                    try {
+                        const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=18&addressdetails=1`);
+                        if (!response.ok) {
+                            throw new Error('Failed to fetch city name');
+                        }
+                        const data = await response.json();
+                        const city = data.address.neighbourhood;
+                        setLoc(city);
+                    } catch (error) {
+                        setError(error.message);
+                    }
+                },
+                (error) => {
+                    setError(error.message);
+                }
+            );
+        } else {
+            setError("Geolocation is not supported by this browser.");
+        }
+    }, []);
+    
+    return (
+        <>
+        <div className="search-home-container d-flex justify-content-center align-items-center" style={{ width:"100%", height:"60vh" , backgroundImage: `url(/Home_photos/home_background_photo.jpg)`}}>
+            <div className='d-flex flex-column justify-content-center align-items-center'>
+                <div className='d-inline' style={{color:"white"}}><h1>Enter Your location here:</h1></div>
+                <div className="input-group mb-3">
+                    <input 
+                        type="text" 
+                        className="form-control" 
+                        placeholder={loc} 
+                        aria-label="Recipient's username" 
+                        aria-describedby="button-addon2" 
+                        onChange={(event) => setLoc(event.target.value)}
+                    />
                 </div>
-        </Link>
-        ))}
-    </div>
-  )
+            </div>
+        </div>
+        <div className='home-container d-flex flex-wrap justify-content-center align-items-center'>
+            <div>
+            </div>
+            {homeArr.map((items , index) => (
+                <Link 
+                    className="project-single-card homecard" data-aos="zoom-in-up"
+                    key={index}
+                    to={`/allplaces/${items?.cardTitle}/${loc}`}
+                    style={{ textDecoration: 'none' }}
+                >
+                    <div className="project-single-card home-single-card" style={{ width: "18rem" }}>
+                        <img src={items.photo} className="card-img-top home-img" alt="..." height="150px" width="120px" />
+                        <div className="home-page-card-text ">
+                            <h5 className="home-card-text d-flex justify-content-center align-items-center"><p>{items.cardTitle}</p></h5>
+                        </div>
+                    </div>
+                </Link>
+            ))}
+        </div>
+        </>
+    )
 }
 
-export default Home
+export default Home;

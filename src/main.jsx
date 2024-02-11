@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import Home from './components/Home.jsx';
 import Allplaces from './components/Allplaces.jsx';
+import MapContainer from './components/MapContainer.jsx';
 
 const router = createBrowserRouter([
   {
@@ -18,8 +19,12 @@ const router = createBrowserRouter([
         element: <Home/>,
       },
       {
-        path: "/allplaces",
+        path: `/allplaces/:title/:loc`,
         element: <Allplaces/>,
+      },
+      {
+        path: `/map/:lat/:lon`,
+        element: <MapContainer/>,
       },
     ]
   },
