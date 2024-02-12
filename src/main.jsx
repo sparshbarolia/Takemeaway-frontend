@@ -8,6 +8,7 @@ import {
 import Home from './components/Home.jsx';
 import Allplaces from './components/Allplaces.jsx';
 import MapContainer from './components/MapContainer.jsx';
+import Details from './components/Details.jsx';
 
 const router = createBrowserRouter([
   {
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
       {
         path: `/allplaces/:title/:loc`,
         element: <Allplaces/>,
+      },
+      {
+        path: `/details/:placeid`,
+        element: <Details/>,
       },
       {
         path: `/map/:lat/:lon`,

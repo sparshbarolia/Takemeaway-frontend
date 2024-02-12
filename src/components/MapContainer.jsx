@@ -3,44 +3,35 @@ import { useEffect, useMemo} from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import LoadingSpinner from "./LoadingSpinner";
 
-const MapContainer = () => {
-  const navigate = useNavigate();
-  const {lat , lon} = useParams(); 
+// const MapContainer = ({lat=28.6523778  , lon=77.1584343 , mapToggle }) => {
+const MapContainer = ({lat, lon , mapToggle }) => {
+
+  // const navigate = useNavigate();
+  // const {lat , lon} = useParams(); 
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: import.meta.env.VITE_API_KEY,
   });
-  const center = useMemo(() => ({ lat: Number(lat), lng: Number(lon) }), []);
+  const center = useMemo(() => ({ lat: lat, lng: lon }), []);
+
+  useEffect(() => {
+    console.log("inside map",lat,lon);
+  },[lat,lon])
 
   return (
     <>
-      <div className="d-flex flex-column justify-content-center align-items-center">
-        <div className="App1 d-flex flex-column justify-content-center align-items-center">
+        <div className="App1 d-flex flex-column justify-content-center align-items-center" style={{maxHeight:mapToggle?'60vh':'0vh'}}>
           {!isLoaded ? (
             <LoadingSpinner />
           ) : (
             <GoogleMap
               mapContainerClassName="map-container"
               center={center}
-              zoom={10}
+              zoom={20}
             >
-              <MarkerF position={{ lat: Number(lat), lng: Number(lon) }} />
+              <MarkerF position={{ lat: lat, lng: lon }} />
             </GoogleMap>
           )}
         </div>
-        <div className="d-flex flex-row justify-content-center align-items-center">
-          <button 
-            className="map-button mx-3" 
-            onClick={() => navigate(-1)}
-          >
-            Navigate back
-          </button>
-          <a href={`https://maps.google.com/?q=${lat},${lon}`} target="_blank"> 
-            <button className="map-button mx-3">
-              Go to google maps
-            </button>
-          </a>
-        </div>
-      </div>
     </>
   );
 };

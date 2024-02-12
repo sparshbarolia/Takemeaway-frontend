@@ -1,7 +1,10 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 
 const Navbar = () => {
+    const navigate = useNavigate();
+    const {placeid} = useParams();
+
     return (
         <>
             <nav className="navbar navbar-expand-lg bg-body-tertiary position-sticky top-0 z-2" data-bs-theme="dark">
@@ -15,12 +18,18 @@ const Navbar = () => {
                             <li className="nav-item">
                                 <Link className="nav-link active" aria-current="page" to='/'>Home</Link>
                             </li>
+                    {
+                        placeid && (<li className="nav-item">
+                                            <Link className="nav-link active" aria-current="page" onClick={() => {navigate(-1)}} >Listing</Link>
+                                    </li>)
+                    }
                         </ul>
                     </div>
+                    
                 </div>
             </nav>
         </>
     )
 }
 
-export default Navbar
+export default Navbar 

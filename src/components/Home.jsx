@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
+import HomeHeader from './HomeHeader';
 
 const Home = () => {
     const [loc , setLoc] = useState("delhi");
@@ -47,21 +48,7 @@ const Home = () => {
     
     return (
         <>
-        <div className="search-home-container d-flex justify-content-center align-items-center" style={{ width:"100%", height:"60vh" , backgroundImage: `url(/Home_photos/home_background_photo.jpg)`}}>
-            <div className='d-flex flex-column justify-content-center align-items-center'>
-                <div className='d-inline' style={{color:"white"}}><h1>Enter Your location here:</h1></div>
-                <div className="input-group mb-3">
-                    <input 
-                        type="text" 
-                        className="form-control" 
-                        placeholder={loc} 
-                        aria-label="Recipient's username" 
-                        aria-describedby="button-addon2" 
-                        onChange={(event) => setLoc(event.target.value)}
-                    />
-                </div>
-            </div>
-        </div>
+        <HomeHeader loc={loc} setLoc={setLoc}/>
         <div className='home-container d-flex flex-wrap justify-content-center align-items-center'>
             <div>
             </div>
