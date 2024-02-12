@@ -223,14 +223,6 @@ const Details = () => {
          })
    }, [])
 
-   useEffect(() => {
-      console.log(details);
-   }, [details])
-
-   useEffect(() => {
-      console.log("yaha vala", details?.geometry?.location?.lat, details?.geometry?.location?.lng);
-   }, [details?.geometry?.location?.lat, details?.geometry?.location?.lng])
-
    return (
 
       <>

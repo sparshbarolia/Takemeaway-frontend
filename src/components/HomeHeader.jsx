@@ -20,15 +20,20 @@ const HomeHeader = ({loc,setLoc}) => {
        });
       },[]);
 
-      useEffect(() => {
-        console.log(loc);
-      },[loc])
+      // useEffect(() => {
+      //   console.log(loc);
+      // },[loc])
 
       const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
           const value = event.target.value;
           setLoc(value);
         }
+      };
+
+      const handleChange = (event) => {
+        const value = event.target.value;
+        setLoc(value);
       };
 
   return (
@@ -41,10 +46,9 @@ const HomeHeader = ({loc,setLoc}) => {
                     <input 
                         type="text" 
                         className="form-control" 
-                        placeholder={loc} 
-                        // aria-label="Recipient's username" 
-                        // aria-describedby="button-addon2" 
                         onKeyDown={handleKeyDown}
+                        placeholder={loc}
+                        onChange={handleChange}
                         ref={inputRef}
                     />
                 </div>

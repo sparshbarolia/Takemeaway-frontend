@@ -13,10 +13,6 @@ const MapContainer = ({lat, lon , mapToggle }) => {
   });
   const center = useMemo(() => ({ lat: lat, lng: lon }), []);
 
-  useEffect(() => {
-    console.log("inside map",lat,lon);
-  },[lat,lon])
-
   return (
     <>
         <div className="App1 d-flex flex-column justify-content-center align-items-center" style={{maxHeight:mapToggle?'60vh':'0vh'}}>

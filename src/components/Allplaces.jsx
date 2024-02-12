@@ -952,10 +952,9 @@ const Allplaces = () => {
       })
    },[])
 
-   useEffect(() => {
-      console.log(allPlacesArr);
-   },[allPlacesArr])
-
+  //  useEffect(() => {
+  //     console.log(allPlacesArr);
+  //  },[allPlacesArr])
 
   return (
    <>
