@@ -4,7 +4,7 @@ const DetailsCarousel = (props) => {
   return (
     <div >
 
-      <div id="carouselExample" style={{ height: "60vh", width: "65%" }} className="carousel slide m-auto">
+      <div id="carouselExample" style={{ height: "60vh", width: "55%" }} className="carousel slide m-auto">
         <div className="carousel-inner" style={{ height: "100%" }}>
 
           {props?.details?.photos?.map((obj, index) => (

@@ -4,6 +4,8 @@ const HomeHeader = ({loc,setLoc}) => {
     const inputRef = useRef();
     const autoCompleteRef = useRef();
 
+    //Google autocomplete to recommend cities
+    //index.html me bhi ek script add kri h
     const options = {
         componentRestrictions: { country: "in" },
         // fields: ["address_components", "geometry", "icon", "name"],

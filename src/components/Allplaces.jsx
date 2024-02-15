@@ -994,7 +994,8 @@ const Allplaces = () => {
                       {/* <div className="pt-5 position-absolute bottom-0"> */}
                       <div>
                           <a 
-                              href={`http://localhost:5173/details/${items.place_id}`}
+                              // href={`${BASE_URL}/details/${items.place_id}`}
+                              href={`/details/${items.place_id}`}
                               className="btn btn-outline-success "
                             >
                               Explore location
