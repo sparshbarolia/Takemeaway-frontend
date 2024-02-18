@@ -19,6 +19,7 @@ results will be displayed as pr your selection
                                          LISTING PAGE
 This page will list all the locations for the selected location and category
 You can navigate to any card and click on "Explore location" to get more information about the location
+It also have a feature of pagination and a map view where you can see every outlet on the map and get more information about the outlet
 
                                          Details PAGE
 It will show the detailed information of the selected place with option to see all the photos,address and reviews
