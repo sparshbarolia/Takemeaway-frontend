@@ -11,9 +11,9 @@ const ReviewsCarousel = (props) => {
         <div className='d-flex flex-row flex-wrap'>
               {props.reviews && props.reviews?.map((item,index) => (
                   <div 
-                    className='m-2 p-3'
+                    className='m-2 p-3 details-box'
                     key={index} 
-                    style={{ borderRadius:"15px", fontFamily:"cursive" ,width: "70%" , backgroundColor:"#e4e5f1"}}
+                    style={{ borderRadius:"15px", width: "100%" , fontFamily:"cursive" , backgroundColor:"#e4e5f1"}}
                     >
                       <div>
                         <h5><FaQuoteLeft /> {item?.text} <FaQuoteRight /></h5>

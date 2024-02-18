@@ -20,7 +20,7 @@ const Details = () => {
    //  ]
 
    const [details, setDetails] = useState({});
-   // const [mapToggle, setMapToggle] = useState(false);
+   const [mapToggle, setMapToggle] = useState(false);
    const [load, setLoad] = useState(true);
 
    const { placeid } = useParams();
@@ -238,28 +238,29 @@ const Details = () => {
                      <h2><b>{details.name}</b></h2>
                      <h4 >{details.rating ? details.rating : 0}⭐</h4>
                   </div>
-                  <div style={{ width: "60%" }}>{details.formatted_address}</div>
+                  <div className='detailed-address'>{details.formatted_address}</div>
                   <div className='mt-1'>{details?.opening_hours?.open_now === false ? <h6 style={{ color: "red" }}>CURRENTLY CLOSED</h6> : <h6 style={{ color: "green" }}>OPEN NOW</h6>}</div>
 
                   <a href={details?.url} target="_blank">
                      <button
                         type="button"
-                        className="btn btn-outline-secondary"
+                        className="btn btn-outline-secondary m-1"
                      >
                         Go to Maps <SiGooglemaps />
                      </button>
                   </a>
-
-                  {/* <button
-                  type="button"
-                  className="btn btn-outline-secondary"
-                  onClick={() => setMapToggle(!mapToggle)}
-               >
-                  Go to Maps <SiGooglemaps />
-               </button> */}
-                  {/* <div>
-                   <MapContainer lat={details?.geometry?.location?.lat} lon={details?.geometry?.location?.lng} mapToggle={mapToggle}/>
-               </div> */}
+                  {/* --- */}
+                  <button
+                     type="button"
+                     className="btn btn-outline-secondary m-1"
+                     onClick={() => setMapToggle(!mapToggle)}
+                  >
+                     Show on Map <SiGooglemaps />
+                  </button>
+                  <div>
+                     <MapContainer lat={details?.geometry?.location?.lat} lon={details?.geometry?.location?.lng} mapToggle={mapToggle} details={details} />
+                  </div>
+                  {/* --- */}
                </div>
 
                {details && <ReviewsCarousel reviews={details?.reviews} />}

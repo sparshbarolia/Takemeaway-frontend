@@ -1,17 +1,11 @@
-import React, { useEffect, useState } from 'react'
-import { Route, Link, useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import Notfound from './Notfound';
-import LoadingSpinner from './LoadingSpinner';
-import MapContainer from './MapContainer';
-import MapModal from './MapModal';
-import ReactStars from 'react-stars';
+import { GoogleMap, Marker, MarkerF, OverlayView, OverlayViewF, useLoadScript } from "@react-google-maps/api";
+import { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
+import LoadingSpinner from "./LoadingSpinner";
+import ReactStars from 'react-stars'
+import React from 'react'
 
-const Allplaces = () => {
-    const navigate = useNavigate();
-    const [loading, setLoading] = useState(true);
-    const [nextPageToken , setNextPageToken] = useState(undefined);
-    const [paginationLoading , setPaginationLoading] = useState(false);
+const MapContainerAllPlaces = ({allPlacesArr}) => {
 
     // const allPlacesArr = [
     //     {
@@ -946,121 +940,77 @@ const Allplaces = () => {
     //     setLoading(false);
     // },[])
 
-    const BASE_URL = import.meta.env.VITE_BASE_URL;
-    const { title, loc } = useParams();
-    const [allPlacesArr, setallPlacesArr] = useState([]);
-        
-        const handleNextPageToken = () => {
-            setPaginationLoading(true);
-            let url = `${BASE_URL}/all-places/${title}/${loc}`
-            if(nextPageToken){
-                url = url+`?next_page_token=${nextPageToken}`;
-            }
-            
-            axios.get(url)
-            .then((output) => {
-                // console.log(output , url);
-                if(output?.data?.next_page_token) setNextPageToken(output?.data?.next_page_token);
-                else setNextPageToken(undefined);
+  const { isLoaded } = useLoadScript({
+    googleMapsApiKey: import.meta.env.VITE_API_KEY,
+  });
 
-                const temp = [...allPlacesArr , ...output?.data?.results ];
-                setallPlacesArr(prev => temp);
-                console.log(temp);
+  const center = useMemo(() => ( allPlacesArr[0].geometry?.location ), []);
 
-                setLoading(false);
-                setPaginationLoading(false);
-            })
-        }
-        
-        useEffect(() => {
-            handleNextPageToken();
-        },[])
-    //  useEffect(() => {
-    //     console.log(allPlacesArr);
-    //  },[allPlacesArr])
+  const [markers, setMarkers] = useState([]);
 
-    return (
-        <>
-            {(loading === true) ? (
-                <LoadingSpinner />
-            )
-                :
-                (allPlacesArr.length === 0) ?
-                    <Notfound />
-                    :
-                    (<>
-                        <MapModal allPlacesArr={allPlacesArr} />
-                        <div className='d-flex flex-wrap justify-content-center align-items-center m-auto' style={{ width: "80vw" }}>
-                            {allPlacesArr?.map((items, index) => (
+  return (
+    <>
+      <div className="App1 d-flex flex-column justify-content-center align-items-center" >
+        {!isLoaded ? (
+          <LoadingSpinner />
+        ) : (
+          <GoogleMap
+            mapContainerClassName="map-container"
+            center={center}
+            zoom={15}
+          >
+            {/* Render all markers */}
+            {allPlacesArr?.map((marker, index) => (
+                <MarkerF title={marker?.name} key={index} position={{lat:marker?.geometry?.location?.lat , lng:marker?.geometry?.location?.lng}}>
+                  {/* {console.log({lat:marker?.geometry?.location?.lat , lng:marker?.geometry?.location?.lng})} */}
+                {/* Overlay clickable Link at marker position */}
+                <OverlayViewF
+                  position={{lat:marker?.geometry?.location?.lat , lng:marker?.geometry?.location?.lng}}
+                  mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
+                  getPixelPositionOffset={(width, height) => ({
+                    x: -(width / 2),
+                    y: -(height),
+                  })}
+                >
+                  <div title={marker?.name} className="flex-col map-card" style={{ position: "absolute", cursor: "pointer", left: 2 , bottom: 0}}>
+                    
+                    <Link to={`/details/${marker?.place_id}`} >
+                      {/* Marker image */}
+                      {marker?.photos?.[0]?
+                      <img
+                        src={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${marker?.photos[0]?.photo_reference}&key=${import.meta.env.VITE_API_KEY}`}
+                        alt="Marker"
+                        style={{ width: "55px", height: "55px" , borderRadius:"50%"}}
+                        data-bs-dismiss="modal"
+                      />
+                      :
+                      <img
+                      src="https://images.pexels.com/photos/260922/pexels-photo-260922.jpeg?auto=compress&cs=tinysrgb&w=600" // Specify the URL of the custom icon
+                        alt="Marker"
+                        style={{ width: "55px", height: "55px" , borderRadius:"50%"}}
+                        data-bs-dismiss="modal"
+                      />
+                      }
+                    </Link>
+                    <div style={{backgroundColor: "white"}}>
+                        <ReactStars
+                        count={5}
+                        size={13}
+                        color2={'#ffd700'}
+                        edit={false}
+                        value={marker?.rating} 
+                        />
+                    </div>
+                  </div>
+                </OverlayViewF>
+              </MarkerF>
+            ))}
+          </GoogleMap>
+        )}
+      </div>
+    </>
+  );
+};
 
-                                <div className='all-places-card d-flex flex-col' key={index} onClick={() => navigate(`/details/${items?.place_id}`)}>
-                                        <div className='all-places-image-container'>
-                                            {console.log(items)}
-                                            {items?.photos?.[0] ?
-                                                (
-                                                    <img
-                                                        src={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${items.photos[0].photo_reference}&key=${import.meta.env.VITE_API_KEY}`}
-                                                        className="card-img-top all-places-image"
-                                                        alt="Restaurant Photo"
-                                                    />
-                                                ) :
-                                                <img
-                                                    src="https://images.pexels.com/photos/260922/pexels-photo-260922.jpeg?auto=compress&cs=tinysrgb&w=600"
-                                                    className="card-img-top all-places-image"
-                                                    alt="" />
-                                            }
-                                        </div>
-                                    
-                                        <div className='all-places-card-content '>
-                                            <div className='d-flex flex-row justify-content-between'>
-                                                <div className='align-items-center'>{items?.opening_hours?.open_now === false ? <h6 style={{ color: "red" }}>CURRENTLY CLOSED</h6> : <h6 style={{ color: "green" }}>OPEN NOW</h6>}</div>
-                                                <div>
-                                                    <ReactStars
-                                                        count={5}
-                                                        size={18}
-                                                        color2={'#ffd700'}
-                                                        edit={false}
-                                                        value={items?.rating}
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className='all-places-card-title'>
-                                                {items?.name}
-                                            </div>
-                                        </div>
-                                </div>
-                            ))}
-                        </div>
-
-                        <div style={{width:"100%"}} className='d-flex justify-content-center align-items-center mb-2'>
-                        {nextPageToken && 
-                        paginationLoading? 
-                        <h2>Loading...</h2>
-                        : 
-                            <button class="cssbuttons-io-button" onClick={handleNextPageToken}>
-                                Loadmore...
-                                <div class="icon">
-                                    <svg
-                                        height="24"
-                                        width="24"
-                                        viewBox="0 0 24 24"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                    >
-                                        <path d="M0 0h24v24H0z" fill="none"></path>
-                                        <path
-                                            d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"
-                                            fill="currentColor"
-                                        ></path>
-                                    </svg>
-                                </div>
-                            </button>
-                        }
-                        </div>
-                    </>
-                    )}
-        </>
-    )
-}
-
-export default Allplaces
+export default MapContainerAllPlaces;
 

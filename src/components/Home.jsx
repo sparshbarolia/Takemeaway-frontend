@@ -52,14 +52,14 @@ const Home = () => {
         <div className='home-container d-flex flex-wrap justify-content-center align-items-center'>
             <div>
             </div>
-            {homeArr.map((items , index) => (
+            {homeArr?.map((items , index) => (
                 <Link 
                     className="project-single-card homecard" data-aos="zoom-in-up"
                     key={index}
                     to={`/allplaces/${items?.cardTitle}/${loc}`}
                     style={{ textDecoration: 'none' }}
                 >
-                    <div className="project-single-card home-single-card" style={{ width: "18rem" }}>
+                    <div className="project-single-card home-single-card shadow" style={{ width: "18rem" }}>
                         <img src={items.photo} className="card-img-top home-img" alt="..." height="150px" width="120px" />
                         <div className="home-page-card-text ">
                             <h5 className="home-card-text d-flex justify-content-center align-items-center"><p>{items.cardTitle}</p></h5>

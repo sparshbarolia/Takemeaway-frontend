@@ -13,12 +13,13 @@ const HomeHeader = ({loc,setLoc}) => {
        };
        useEffect(() => {
         autoCompleteRef.current = new window.google.maps.places.Autocomplete(
-         inputRef.current,
+         inputRef?.current,
          options
       );
       autoCompleteRef.current.addListener("place_changed", async function () {
         const place = await autoCompleteRef.current.getPlace();
-            setLoc(place?.place?.name);
+          // console.log(place?.name);
+          setLoc(place?.name);
        });
       },[]);
 
@@ -26,17 +27,9 @@ const HomeHeader = ({loc,setLoc}) => {
       //   console.log(loc);
       // },[loc])
 
-      const handleKeyDown = (event) => {
-        if (event.key === 'Enter') {
-          const value = event.target.value;
-          setLoc(value);
-        }
-      };
-
       const handleChange = (event) => {
-        const value = event.target.value;
-        setLoc(value);
-      };
+        setLoc(event.target.value);
+      }
 
   return (
     <>
@@ -47,11 +40,10 @@ const HomeHeader = ({loc,setLoc}) => {
 
                     <input 
                         type="text" 
-                        className="form-control" 
-                        onKeyDown={handleKeyDown}
+                        className="form-control"
                         placeholder={loc}
-                        onChange={handleChange}
                         ref={inputRef}
+                        onChange={handleChange}
                     />
                 </div>
             </div>
