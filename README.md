@@ -1,6 +1,6 @@
 https://github.com/sparshbarolia/Takemeaway-frontend/assets/107509768/b99d0586-e763-4865-8312-b173e2045bb5
 
-DEMO LINK -> https://takemeaway-google.netlify.app/
+DEMO LINK -> https://takemeaway1.netlify.app/
 
 # google_places_project
  React project using google places api to show nearby locations
