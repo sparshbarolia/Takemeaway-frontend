@@ -1,4 +1,6 @@
-DEMO LINK -> https://takemeaway-google.netlify.app/
+https://github.com/sparshbarolia/Takemeaway-frontend/assets/107509768/b99d0586-e763-4865-8312-b173e2045bb5
+
+DEMO LINK -> https://takemeaway1.netlify.app/
 
 # google_places_project
  React project using google places api to show nearby locations
@@ -19,6 +21,7 @@ results will be displayed as pr your selection
                                          LISTING PAGE
 This page will list all the locations for the selected location and category
 You can navigate to any card and click on "Explore location" to get more information about the location
+It also have a feature of pagination and a map view where you can see every outlet on the map and get more information about the outlet
 
                                          Details PAGE
 It will show the detailed information of the selected place with option to see all the photos,address and reviews
