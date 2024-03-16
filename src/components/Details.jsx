@@ -213,6 +213,9 @@ const Details = () => {
    //       });
    //  },[placeid])
 
+   //  useEffect(() => {
+   //    setLoad(false);
+   //  },[])
 
 
    useEffect(() => {

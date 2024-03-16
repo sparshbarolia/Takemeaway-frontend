@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Route, Link, useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Notfound from './Notfound';
@@ -6,9 +6,11 @@ import LoadingSpinner from './LoadingSpinner';
 import MapContainer from './MapContainer';
 import MapModal from './MapModal';
 import ReactStars from 'react-stars';
+import { searchContext } from '../store/SearchAllPlacesContextProvider';
 
 const Allplaces = () => {
     const navigate = useNavigate();
+    const {keyword , rating , setKeyword} = useContext(searchContext);
     const [loading, setLoading] = useState(true);
     const [nextPageToken , setNextPageToken] = useState(undefined);
     const [paginationLoading , setPaginationLoading] = useState(false);
@@ -965,7 +967,7 @@ const Allplaces = () => {
 
                 const temp = [...allPlacesArr , ...output?.data?.results ];
                 setallPlacesArr(prev => temp);
-                console.log(temp);
+                // console.log(temp);
 
                 setLoading(false);
                 setPaginationLoading(false);
@@ -973,11 +975,12 @@ const Allplaces = () => {
         }
         
         useEffect(() => {
+            setKeyword('');
             handleNextPageToken();
         },[])
-    //  useEffect(() => {
-    //     console.log(allPlacesArr);
-    //  },[allPlacesArr])
+        useEffect(() => {
+            console.log(allPlacesArr);
+        },[allPlacesArr])
 
     return (
         <>
@@ -991,7 +994,13 @@ const Allplaces = () => {
                     (<>
                         <MapModal allPlacesArr={allPlacesArr} />
                         <div className='d-flex flex-wrap justify-content-center align-items-center m-auto' style={{ width: "80vw" }}>
-                            {allPlacesArr?.map((items, index) => (
+                            {allPlacesArr?.filter((item) => {
+                                    return keyword === '' ?
+                                     item && item.rating < rating+0.5
+                                     : 
+                                     item.name.toLowerCase().includes(keyword.toLowerCase()) && item.rating < rating+0.5;
+                                })
+                                .map((items, index) => (
 
                                 <div className='all-places-card d-flex flex-col' key={index} onClick={() => navigate(`/details/${items?.place_id}`)}>
                                         <div className='all-places-image-container'>
@@ -1025,7 +1034,11 @@ const Allplaces = () => {
                                                 </div>
                                             </div>
                                             <div className='all-places-card-title'>
-                                                {items?.name}
+                                                {items?.name?.length < 35 ? 
+                                                    <>{items?.name}</>
+                                                    :
+                                                    <>{items.name.substring(0,35)} . . .</>
+                                                }
                                             </div>
                                         </div>
                                 </div>

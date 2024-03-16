@@ -2,26 +2,26 @@ import React, { useEffect, useRef } from 'react'
 
 const HomeHeader = ({loc,setLoc}) => {
     const inputRef = useRef();
-    const autoCompleteRef = useRef();
+    // const autoCompleteRef = useRef();
 
     //Google autocomplete to recommend cities
     //index.html me bhi ek script add kri h
-    const options = {
-        componentRestrictions: { country: "in" },
-        // fields: ["address_components", "geometry", "icon", "name"],
-        fields: ["name"],
-       };
-       useEffect(() => {
-        autoCompleteRef.current = new window.google.maps.places.Autocomplete(
-         inputRef?.current,
-         options
-      );
-      autoCompleteRef.current.addListener("place_changed", async function () {
-        const place = await autoCompleteRef.current.getPlace();
-          // console.log(place?.name);
-          setLoc(place?.name);
-       });
-      },[]);
+    // const options = {
+    //     componentRestrictions: { country: "in" },
+    //     // fields: ["address_components", "geometry", "icon", "name"],
+    //     fields: ["name"],
+    //    };
+    //    useEffect(() => {
+    //     autoCompleteRef.current = new window.google.maps.places.Autocomplete(
+    //      inputRef?.current,
+    //      options
+    //   );
+    //   autoCompleteRef.current.addListener("place_changed", async function () {
+    //     const place = await autoCompleteRef.current.getPlace();
+    //       // console.log(place?.name);
+    //       setLoc(place?.name);
+    //    });
+    //   },[]);
 
       // useEffect(() => {
       //   console.log(loc);

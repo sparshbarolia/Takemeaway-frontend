@@ -1,11 +1,13 @@
 import { GoogleMap, Marker, MarkerF, OverlayView, OverlayViewF, useLoadScript } from "@react-google-maps/api";
-import { useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import LoadingSpinner from "./LoadingSpinner";
 import ReactStars from 'react-stars'
 import React from 'react'
+import { searchContext } from "../store/SearchAllPlacesContextProvider";
 
 const MapContainerAllPlaces = ({allPlacesArr}) => {
+  const {keyword , rating} = useContext(searchContext);
 
     // const allPlacesArr = [
     //     {
@@ -960,7 +962,13 @@ const MapContainerAllPlaces = ({allPlacesArr}) => {
             zoom={15}
           >
             {/* Render all markers */}
-            {allPlacesArr?.map((marker, index) => (
+            {allPlacesArr?.filter((item) => {
+                                    return keyword === '' ?
+                                     item && item.rating < rating+0.5
+                                     : 
+                                     item.name.toLowerCase().includes(keyword.toLowerCase()) && item.rating < rating+0.5;
+                                })
+            .map((marker, index) => (
                 <MarkerF title={marker?.name} key={index} position={{lat:marker?.geometry?.location?.lat , lng:marker?.geometry?.location?.lng}}>
                   {/* {console.log({lat:marker?.geometry?.location?.lat , lng:marker?.geometry?.location?.lng})} */}
                 {/* Overlay clickable Link at marker position */}
